@@ -1,0 +1,50 @@
+name: Build and Publish Tor Docker Image
+
+on:
+  schedule:
+    - cron: "0 3 * * 0"   # Weekly (Sunday 03:00 UTC)
+  workflow_dispatch:      # Allow manual trigger
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and inspect
+        id: build
+        run: |
+          docker buildx build --platform linux/amd64 -t sapphive/tor:test --load .
+          TOR_VERSION=$(docker run --rm sapphive/tor:test tor --version | head -n 1 | awk '{print $3}')
+          echo "version=$TOR_VERSION" >> $GITHUB_OUTPUT
+          echo "Detected Tor Version: $TOR_VERSION"
+
+      - name: Build and push multi-arch
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            sapphive/tor:${{ steps.build.outputs.version }}
+            sapphive/tor:stable
+            sapphive/tor:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
