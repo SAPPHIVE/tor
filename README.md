@@ -16,17 +16,34 @@ This project is **not** affiliated with, endorsed by, or sponsored by The Tor Pr
 
 ## Quick Start
 
+### 🚀 Standard Client (Single Identity)
+Ideal for basic anonymity and browsing. This is the slim version (~40MB).
 ```bash
-docker run -d --name tor -p 9050:9050 sapphive/tor
+docker run -d --name tor -p 9050:9050 sapphive/tor:latest
 ```
 
-You can now use the Tor proxy at `localhost:9050`.
+### 🔄 Rotating Proxy (Multi-Identity)
+Ideal for web scraping and automated testing. It runs multiple Tor instances and load-balances between them for instant IP rotation.
+```bash
+docker run -d \
+  --name tor-rotating \
+  -p 9050:9050 \
+  -e TOR_INSTANCES=10 \
+  sapphive/tor:rotating
+```
+Test your rotation IP:
+`for i in {1..5}; do curl --socks5-hostname localhost:9050 https://check.torproject.org/api/ip; echo; sleep 1; done`
 
-## Configuration
+## ⚙️ Configuration
 
-This image runs Tor with the default configuration, exposing the SOCKS port on `0.0.0.0:9050`.
+### Environment Variables (Rotating Tag Only)
 
-If you need to provide a custom `torrc`, you can mount it:
+| Variable | Default | Description |
+| :--- | :--- | :--- |
+| `TOR_INSTANCES` | `10` | The number of independent Tor processes to run. |
+
+### Advanced: Custom `torrc` (Standard Tag Only)
+The standard image uses the default Tor configuration. You can mount your own `torrc` file:
 
 ```bash
 docker run -d \

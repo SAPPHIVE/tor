@@ -30,7 +30,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and inspect
+      - name: Build and inspect version
         id: build
         run: |
           docker buildx build --platform linux/amd64 -t sapphive/tor:test --load .
@@ -38,15 +38,29 @@ jobs:
           echo "version=$TOR_VERSION" >> $GITHUB_OUTPUT
           echo "Detected Tor Version: $TOR_VERSION"
 
-      - name: Build and push multi-arch
+      - name: Build and push Standard (latest/stable)
         uses: docker/build-push-action@v5
         with:
           context: .
+          file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
             sapphive/tor:${{ steps.build.outputs.version }}
             sapphive/tor:stable
             sapphive/tor:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Build and push Rotating
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile.rotating
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            sapphive/tor:rotating
+            sapphive/tor:rotating-${{ steps.build.outputs.version }}
           cache-from: type=gha
           cache-to: type=gha,mode=max

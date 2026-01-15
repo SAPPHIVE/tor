@@ -1,0 +1,37 @@
+FROM debian:stable-slim
+
+LABEL maintainer="SAPPHIVE <support@sapphive.com>"
+LABEL org.opencontainers.image.source="https://github.com/sapphive/tor-docker"
+LABEL org.opencontainers.image.description="Unofficial Tor rotating proxy (Multi-instance) image built from Tor Project repositories"
+
+# Install dependencies, Tor, HAProxy, and Supervisor
+RUN apt update && \
+    apt install -y --no-install-recommends \
+    curl \
+    gnupg \
+    ca-certificates \
+    procps \
+    haproxy \
+    supervisor && \
+    curl https://deb.torproject.org/torproject.org/A3C4F0F979CAA22CDBA8F512EE8CBC9E886DDD89.asc \
+      | gpg --dearmor > /usr/share/keyrings/tor-archive-keyring.gpg && \
+    echo "deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org stable main" \
+      > /etc/apt/sources.list.d/tor.list && \
+    apt update && \
+    apt install -y --no-install-recommends tor && \
+    apt clean && rm -rf /var/lib/apt/lists/*
+
+# Create directories for Tor data
+RUN mkdir -p /var/lib/tor-instances && \
+    chown -R debian-tor:debian-tor /var/lib/tor-instances
+
+# Copy configuration script
+COPY entrypoint-rotating.sh /usr/local/bin/entrypoint-rotating.sh
+RUN chmod +x /usr/local/bin/entrypoint-rotating.sh
+
+# Expose HAProxy entry port
+EXPOSE 9050
+
+# The instances stay internally accessible on ports starting from 9051
+
+ENTRYPOINT ["/usr/local/bin/entrypoint-rotating.sh"]

@@ -13,57 +13,36 @@ This image provides a production-hardened, automatically updated Tor client. It 
 
 ### Key Features:
 *   🛡️ **Security Hardened:** Runs as a non-root user (`debian-tor`).
+*   🔄 **IP Rotation:** Optional `rotating` tag for high-performance scraping and identity rotation.
 *   🔄 **Fully Automated:** Rebuilt weekly to ensure the latest Tor binary and OS security patches.
 *   🩺 **Integrated Healthchecks:** Periodic internal checks verify the SOCKS5 proxy is active.
-*   📦 **Multi-Arch Support:** Optimized for `amd64` (Intel/AMD) and `arm64` (Apple Silicon/Raspberry Pi).
 
 ---
 
 ## 🛠️ Usage
 
-### Quick Start (Docker CLI)
-Run the latest stable version with one command:
+### Standard Client (Single Identity)
+Run the latest stable version (slim image ~40MB):
+```bash
+docker run -d --name tor-client -p 9050:9050 sapphive/tor:latest
+```
+
+### Rotating Proxy (Multi-Identity)
+For automated rotation, use the multi-instance version:
 ```bash
 docker run -d \
-  --name tor-client \
+  --name tor-rotating \
   -p 9050:9050 \
-  sapphive/tor:latest
+  -e TOR_INSTANCES=10 \
+  sapphive/tor:rotating
 ```
-
-### Infrastructure (Docker Compose)
-Recommended for production environments:
-```yaml
-services:
-  tor:
-    image: sapphive/tor:stable
-    container_name: tor-proxy
-    ports:
-      - "9050:9050"
-    restart: always
-    healthcheck:
-      test: ["CMD", "curl", "--socks5-hostname", "localhost:9050", "https://check.torproject.org/"]
-      interval: 60s
-      timeout: 15s
-      retries: 3
-```
-
----
-
-## ⚙️ Configuration
-
-### Custom Tor Config (`torrc`)
-By default, this image exposes the SOCKS port on `0.0.0.0:9050`. To use a custom configuration:
-```bash
-docker run -d \
-  -p 9050:9050 \
-  -v /path/to/your/torrc:/etc/tor/torrc:ro \
-  sapphive/tor
-```
+*Port 9050 provides a single entry point that load-balances between multiple identities.*
 
 ---
 
 ## 🏷️ Supported Tags
-*   `latest`, `stable`: Always points to the most recent weekly build.
+*   `latest`, `stable`: Single Tor instance (Slim image).
+*   `rotating`: Multi-instance Tor proxy with built-in HAProxy load balancing.
 *   `0.4.x.x`: Specific Tor versions for high-stability environments.
 
 ---
