@@ -1,4 +1,4 @@
-# <img src="https://styleguide.torproject.org/static/images/tor-logo/color.svg" width="32"> Sapphive Tor Proxy & Hosting Suite
+# <img src="https://raw.githubusercontent.com/SAPPHIVE/onion-pipe-relay/main/src/assets/logo/logo.png" height="32"> Tor Proxy & Hosting Suite (maintained by Sapphive)
 
 ![Docker Pulls](https://img.shields.io/docker/pulls/sapphive/tor) ![Docker Image Size](https://img.shields.io/docker/image-size/sapphive/tor) ![Build Status](https://github.com/sapphive/tor-docker/actions/workflows/build.yml/badge.svg)
 
@@ -9,7 +9,7 @@
 
 ## 🚀 Overview
 
-The **Sapphive Tor Proxy & Hosting Suite** is a production-hardened collection of specialized Tor tools. It is designed to solve complex anonymity and hosting challenges with three distinct modes:
+The **Tor Proxy & Hosting Suite (maintained by Sapphive)** is a production-hardened collection of specialized Tor tools. It is designed to solve complex anonymity and hosting challenges with three distinct modes:
 
 *   **Standard Proxy:** High-performance, slim SOCKS5 client.
 *   **Rotating Identity:** Multi-instance load balancer for automated IP rotation and web scraping.
@@ -39,8 +39,7 @@ Designed for developers and DevOps teams, this suite provides reliable, zero-mai
 *   **Market Research:** Access region-locked data or price-comparison sites across different Tor exit nodes.
 
 ### 🧅 Onion Sidecar (`onion`)
-*   **No-IP Hosting:** Host a website or API from your home computer or local server without needing a Static IP or port forwarding.
-*   **Bypass Restrictions:** Access your internal dashboard (Grafana, Admin UI) securely while behind strict corporate firewalls or CGNAT.
+*   **No-IP Hosting:** Host a website or API from your home computer or local server without needing a Static IP or port forwarding.*   **Security First:** Automatic **SSL Termination**. Expose your service over `https://` with auto-generated self-signed certificates.*   **Bypass Restrictions:** Access your internal dashboard (Grafana, Admin UI) securely while behind strict corporate firewalls or CGNAT.
 *   **Secure IoT Gateways:** Connect to your smart home or remote devices using a private `.onion` address that works globally.
 
 ---
@@ -64,13 +63,16 @@ Expose any web service (Nginx, Apache, Node.js, PHP, etc.) as a hidden service i
 
 **Why it's powerful:**
 *   🌐 **Production-Ready:** Full support for **CRUD operations** (POST, PUT, DELETE), cookies, and deep **subpage routing**.
+*   � **Dual Protocol:** Automatically exposes your service via both **HTTP (80)** and **HTTPS (443)** with built-in SSL termination.
 *   🛡️ **NAT & Firewall Bypass:** Works behind CGNAT and strict firewalls. No port forwarding or static IP required.
 *   🚀 **Automated Identity:** Dynamically generates your `.onion` address and prints it to your logs on first run.
 
 **Terminal Output Example:**
 ```text
 ***************************************************
- YOUR ONION ADDRESS: v2c3...f4g5.onion
+ 🚀 ONION SIDECAR ACTIVE
+ 📍 PUBLIC ONION: http://v2c3...f4g5.onion
+ 🔒 SECURE ONION: https://v2c3...f4g5.onion
 ***************************************************
 ```
 
@@ -120,10 +122,10 @@ services:
 ---
 
 ## 🤝 Maintainer & Support
-Maintained by **SAPPHIVE Infrastructure Team**.
+Maintained by the **Sapphive Infrastructure Team**.
 *   **Website:** [sapphive.com](https://sapphive.com)
 *   **Support:** [support@sapphive.com](mailto:support@sapphive.com)
 *   **Source:** [GitHub: sapphive/tor-docker](https://github.com/sapphive/tor-docker)
 
 ## ⚖️ Legal Disclaimer
-Tor is a trademark of The Tor Project, Inc. Use of the Tor trademark is for descriptive purposes only.
+Tor is a trademark of The Tor Project, Inc. This project is a community-driven implementation managed by SAPPHIVE and is not an official product of The Tor Project. All logos and trademarks belong to their respective owners.
