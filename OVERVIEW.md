@@ -39,8 +39,7 @@ Designed for developers and DevOps teams, this suite provides reliable, zero-mai
 *   **Market Research:** Access region-locked data or price-comparison sites across different Tor exit nodes.
 
 ### 🧅 Onion Sidecar (`onion`)
-*   **No-IP Hosting:** Host a website or API from your home computer or local server without needing a Static IP or port forwarding.
-*   **Bypass Restrictions:** Access your internal dashboard (Grafana, Admin UI) securely while behind strict corporate firewalls or CGNAT.
+*   **No-IP Hosting:** Host a website or API from your home computer or local server without needing a Static IP or port forwarding.*   **Security First:** Automatic **SSL Termination**. Expose your service over `https://` with auto-generated self-signed certificates.*   **Bypass Restrictions:** Access your internal dashboard (Grafana, Admin UI) securely while behind strict corporate firewalls or CGNAT.
 *   **Secure IoT Gateways:** Connect to your smart home or remote devices using a private `.onion` address that works globally.
 
 ---
@@ -64,13 +63,16 @@ Expose any web service (Nginx, Apache, Node.js, PHP, etc.) as a hidden service i
 
 **Why it's powerful:**
 *   🌐 **Production-Ready:** Full support for **CRUD operations** (POST, PUT, DELETE), cookies, and deep **subpage routing**.
+*   � **Dual Protocol:** Automatically exposes your service via both **HTTP (80)** and **HTTPS (443)** with built-in SSL termination.
 *   🛡️ **NAT & Firewall Bypass:** Works behind CGNAT and strict firewalls. No port forwarding or static IP required.
 *   🚀 **Automated Identity:** Dynamically generates your `.onion` address and prints it to your logs on first run.
 
 **Terminal Output Example:**
 ```text
 ***************************************************
- YOUR ONION ADDRESS: v2c3...f4g5.onion
+ 🚀 SAPPHIVE ONION SIDECAR ACTIVE
+ 📍 PUBLIC ONION: http://v2c3...f4g5.onion
+ 🔒 SECURE ONION: https://v2c3...f4g5.onion
 ***************************************************
 ```
 
@@ -126,4 +128,4 @@ Maintained by **SAPPHIVE Infrastructure Team**.
 *   **Source:** [GitHub: sapphive/tor-docker](https://github.com/sapphive/tor-docker)
 
 ## ⚖️ Legal Disclaimer
-Tor is a trademark of The Tor Project, Inc. Use of the Tor trademark is for descriptive purposes only.
+Tor is a trademark of The Tor Project, Inc. This project is a community-driven implementation managed by SAPPHIVE and is not an official product of The Tor Project. All logos and trademarks belong to their respective owners.

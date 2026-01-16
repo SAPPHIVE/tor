@@ -16,10 +16,17 @@ RUN apt update && \
     echo "deb [signed-by=/usr/share/keyrings/tor-archive-keyring.gpg] https://deb.torproject.org/torproject.org stable main" \
       > /etc/apt/sources.list.d/tor.list && \
     apt update && \
-    apt install -y --no-install-recommends tor && \
+    apt install -y --no-install-recommends tor nginx openssl gettext-base && \
     apt clean && rm -rf /var/lib/apt/lists/*
 
-# Copy configuration script
+# Generate self-signed SSL certificate
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+    -keyout /etc/nginx/server.key \
+    -out /etc/nginx/server.crt \
+    -subj "/C=UN/ST=Privacy/L=Tor/O=Sapphive/CN=tor-onion"
+
+# Copy configuration templates
+COPY nginx-onion.conf.template /etc/nginx/templates/nginx.conf.template
 COPY entrypoint-onion.sh /usr/local/bin/entrypoint-onion.sh
 RUN chmod +x /usr/local/bin/entrypoint-onion.sh
 

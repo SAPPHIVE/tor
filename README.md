@@ -118,6 +118,6 @@ docker run -d \
 
 Maintained by [SAPPHIVE Support](mailto:support@sapphive.com) / [sapphive.com](https://sapphive.com).
 
-## Legal
+## ⚖️ Legal Disclaimer
+Tor is a trademark of The Tor Project, Inc. This project is a community-driven implementation managed by SAPPHIVE and is not an official product of The Tor Project. All logos and trademarks belong to their respective owners.
 
-Tor is a trademark of The Tor Project, Inc. Use of the Tor trademark in this project is for descriptive purposes only.
